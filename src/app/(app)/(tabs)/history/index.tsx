@@ -106,8 +106,8 @@ export default function HistoryPage() {
 
   if (loading) {
     return (
-      <SafeAreaView className="flex-1 bg-gray-50">
-        <View className="px-6 py-4 bg-white border-b border-gray-200">
+      <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
+        <View className="px-6 pt-4 pb-4 bg-white border-b border-gray-200">
           <Text className="text-2xl font-bold text-gray-900">
             Workout History
           </Text>
@@ -121,20 +121,24 @@ export default function HistoryPage() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
       <StatusBar barStyle="dark-content" />
       {/* Header */}
-      <View className="px-6 py-4 bg-white border-b border-gray-200">
+      <View className="px-6 pt-4 pb-4 bg-white border-b border-gray-200">
         <Text className="text-2xl font-bold text-gray-900">
           Workout History
         </Text>
         <Text className="text-gray-600 mt-1">
-          {workouts.length} workout{workouts.length === 1 ? "s" : ""} completed
+          {workouts.length} workout{workouts.length === 1 ? "" : "s"} completed
         </Text>
       </View>
       <ScrollView
-        className="flex-1 p-8"
-        contentContainerStyle={{ paddingBottom: 24 }}
+        className="flex-1 px-6"
+        contentContainerStyle={{
+          paddingTop: 16,
+          paddingBottom: 120
+        }}
+        showsVerticalScrollIndicator={false}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         {workouts.length === 0 ? (

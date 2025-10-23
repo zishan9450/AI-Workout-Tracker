@@ -65,10 +65,10 @@ const Exercises = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
       <StatusBar barStyle="dark-content" />
       {/* Header */}
-      <View className='px-6 py-4 border-b border-gray-200 bg-white'>
+      <View className='px-6 pt-4 pb-4 border-b border-gray-200 bg-white'>
         <Text className='text-2xl font-bold text-gray-900'>
           Exercise Library
         </Text>
@@ -90,7 +90,10 @@ const Exercises = () => {
       <FlatList
         data={filteredExercises}
         keyExtractor={(item) => item._id}
-        contentContainerStyle={{ padding: 24, paddingBottom: 100 }}
+        contentContainerStyle={{
+          padding: 24,
+          paddingBottom: 120
+        }}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <ExerciseCard

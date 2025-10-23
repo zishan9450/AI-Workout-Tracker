@@ -1,11 +1,12 @@
 import React, { use } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ActivityIndicator, Alert, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { GetWorkoutQueryResult } from "@/lib/sanity/types";
 import { defineQuery } from "groq";
 import { client } from "@/lib/sanity/client";
+import { formatDuration } from "lib/utils";
 
 export const getWorkoutsQuery = defineQuery(`*[_type == "workout" && userId == $userId] | order(date desc){
  _id,
@@ -82,10 +83,102 @@ export default function ProfilePage() {
     );
   }
   return (
-    <SafeAreaView className="flex flex-1">
-      <ScrollView className="flex-1">
-        <StatusBar barStyle="dark-content" />
-        <Text>Profile</Text>
+    <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
+      <StatusBar barStyle="dark-content" />
+      <ScrollView
+        className="flex-1"
+        contentContainerStyle={{
+          paddingBottom: 120,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Header */}
+        <View className="px-6 pt-4 pb-6">
+          <Text className="text-3xl font-bold text-gray-900">Profile</Text>
+          <Text className="text-lg text-gray-600 mt-1">Manage your account and stats</Text>
+        </View>
+
+        {/* User Info */}
+        <View className="px-6 mb-6">
+          <View className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <View className="flex-row items-center mb-4">
+              <View className="w-16 h-16 bg-blue-600 rounded-full items-center justify-center mr-4">
+                <Image
+                  source={{
+                    uri: user.externalAccounts[0]?.imageUrl ?? user?.imageUrl,
+                  }}
+                  style={{ width: 64, height: 64 }}
+                  className="rounded-full"
+                />
+              </View>
+              <View className="flex-1">
+                <Text className="text-xl font-semibold text-gray-900">
+                  {user?.firstName && user?.lastName
+                    ? `${user.firstName} ${user.lastName}`
+                    : user?.firstName
+                      ? user.firstName
+                      : "User"}
+                </Text>
+                <Text className="text-gray-600">{user?.emailAddresses[0]?.emailAddress}</Text>
+                <Text className="text-sm text-gray-500 mt-1">
+                  Joined {formatJoinDate(joinDate)} &middot; {daysSinceJoining} days ago
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Stats */}
+        <View className="px-6 mb-6">
+          <View className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <Text className="text-lg font-semibold text-gray-900 mb-4">Your Fitness Stats</Text>
+            <View className="flex-row justify-between">
+              <View className="items-center flex-1">
+                <Text className="text-2xl font-bold text-blue-600">{totalWorkouts}</Text>
+                <Text className="text-gray-600 text-sm text-center">Total{"\n"}Workouts</Text>
+              </View>
+              <View className="items-center flex-1">
+                <Text className="text-2xl font-bold text-green-600">{formatDuration(totalDuration)}</Text>
+                <Text className="text-gray-600 text-sm text-center">Total{"\n"}Time</Text>
+              </View>
+              <View className="items-center flex-1">
+                <Text className="text-2xl font-bold text-purple-600">{daysSinceJoining}</Text>
+                <Text className="text-gray-600 text-sm text-center">Days{"\n"}Active</Text>
+              </View>
+            </View>
+            {/* Average Duration */}
+            {totalWorkouts > 0 && (
+              <View className="mt-4 pt-4 border-t border-gray-100">
+                <View className="flex-row items-center justify-between">
+                  <Text className="text-gray-900">Average Workout Duration</Text>
+                  <Text className="font-semibold text-gray-900">{formatDuration(averageDuration)}</Text>
+                </View>
+              </View>
+            )}
+          </View>
+        </View>
+
+        {/* Account settings */}
+
+        <View className="px-6 mb-6">
+          <View className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+            <Text className="text-lg font-semibold text-gray-900 mb-4">Account Settings</Text>
+            <TouchableOpacity
+              className="py-3 border-b border-gray-100"
+              onPress={() => Alert.alert("Change Email", "This feature is not implemented yet.")}
+              activeOpacity={0.7}
+            >
+              <Text className="text-gray-900">Change Email</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="py-3"
+              onPress={() => Alert.alert("Change Password", "This feature is not implemented yet.")}
+              activeOpacity={0.7}
+            >
+              <Text className="text-gray-900">Change Password</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
 
         {/* Sign Out */}
         <View className="px-6 mb-8">

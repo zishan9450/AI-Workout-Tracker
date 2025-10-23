@@ -11,12 +11,12 @@ function Workout() {
   };
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
       <StatusBar barStyle="dark-content" />
       {/* Main Start Workout Screen */}
       <View className="flex-1 px-6">
         {/* Header */}
-        <View className="pt-8 pb-6">
+        <View className="pt-4 pb-6">
           <Text className="text-3xl font-bold text-gray-900 mb-2">
             Ready to Workout?
           </Text>
@@ -26,7 +26,7 @@ function Workout() {
         </View>
       </View>
       {/* Generic Start Workout Card */}
-      <View className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 mx-6 mb-8">
+      <View className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 mx-6 mb-8" style={{ marginBottom: 50 }}>
         <View className="flex-row items-center justify-between mb-6">
           <View className="flex-row items-center">
             <View className="w-12 h-12 bg-blue-100 rounded-full items-center justify-center mr-3">
