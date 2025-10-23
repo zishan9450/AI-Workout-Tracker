@@ -1,40 +1,16 @@
 import "../global.css";
 import { Slot, Stack, Tabs } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { tokenCache } from "@clerk/clerk-expo/token-cache";
+import { ClerkProvider } from "@clerk/clerk-expo";
+
+// Type assertion to handle React 19 compatibility with Clerk
+const TypedClerkProvider = ClerkProvider as any;
 
 export default function Layout() {
   return (
-    <Tabs>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="user" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: "History",
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="clockcircle" color={color} size={size} />
-          ),
-        }}
-      />
-    </Tabs>
+    <TypedClerkProvider tokenCache={tokenCache}>
+      <Slot />
+    </TypedClerkProvider>
   );
 }
